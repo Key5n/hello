@@ -6,14 +6,11 @@
   };
 
   outputs = { self, nixpkgs }: {
-
     packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
 
-    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
+    defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;  # Set the default package directly
 
-    defaultPackage.x86_64-linux =
-      # Notice the reference to nixpkgs here.
-      with import nixpkgs { system = "x86_64-linux"; };
+    packages.x86_64-linux.my-custom-package = with import nixpkgs { system = "x86_64-linux"; };
       stdenv.mkDerivation {
         name = "hello";
         src = self;
